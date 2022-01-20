@@ -60,11 +60,11 @@ def localizacion(balizas, real, ideal, centro, radio, mostrar=0):
   
   # El radio y los incrementos influyen en el coste computacional
   menor = 1000 
-  medidasReales = real.sense(objetivos)
+  medidasReales = real.sense(balizas)
   poseFinal = []
   for x in np.arange(0, 2*radio, 0.5):
     for y in np.arange(0, 2*radio, 0.5):
-      ideal.set(centro[0] - radio + x, centro[1] - radio + y, centro[2])
+      ideal.set(centro[0] - radio + x, centro[1] - radio + y, centro[2]) 
       meassProb = ideal.measurement_prob(medidasReales, balizas)
       if meassProb < menor:
         menor = meassProb
@@ -134,6 +134,10 @@ tiempo  = 0.
 espacio = 0.
 #random.seed(0)
 random.seed(datetime.now())
+
+localizacion(objetivos, real, ideal, ideal.pose(), 2) #Localizacion inicial
+pose = ideal.pose()
+
 for punto in objetivos:
   while distancia(tray_ideal[-1],punto) > EPSILON and len(tray_ideal) <= 1000:
     
@@ -170,4 +174,3 @@ print("Recorrido: "+str(round(espacio,3))+"m / "+str(tiempo/FPS)+"s")
 print("Distancia real al objetivo: "+\
     str(round(distancia(tray_real[-1],objetivos[-1]),3))+"m")
 mostrar(objetivos,tray_ideal,tray_real)  # Representaci�n gr�fica
-
